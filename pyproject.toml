@@ -1,0 +1,89 @@
+[project]
+name = "cudara-client"
+version = "0.0.1"
+description = "Python client for Cudara inference server with prompt engineering utilities"
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["cudara", "inference", "llm", "vlm", "embeddings", "client", "ollama", "ai"]
+authors = [
+    {name = "Julio Galindo"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.12"
+
+dependencies = [
+    "httpx>=0.28.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-httpx>=0.30.0",
+    "ruff>=0.14.9",
+    "mypy>=1.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/juliog922/cudara"
+Repository = "https://github.com/juliog922/cudara"
+Documentation = "https://github.com/juliog922/cudara#cudara-client"
+Issues = "https://github.com/juliog922/cudara/issues"
+Changelog = "https://github.com/juliog922/cudara/blob/main/CHANGELOG.md"
+
+[project.scripts]
+cudara-client = "cudara_client:main"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src/cudara_client",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cudara_client"]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-httpx>=0.30.0",
+    "ruff>=0.2.0",
+    "mypy>=1.8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "C4", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
