@@ -1,6 +1,10 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
 [project]
 name = "cudara-client"
-version = "0.0.1"
+dynamic = ["version"]
 description = "Python client for Cudara inference server with prompt engineering utilities"
 readme = "README.md"
 license = {text = "MIT"}
