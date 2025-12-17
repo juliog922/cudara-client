@@ -152,6 +152,39 @@ def test_embed_wraps_single_string_into_list():
         c.close()
 
 
+def test_embed_supports_rerank_scores_as_1d_embeddings_and_passes_options():
+    """Option 2: rerank models are served through /api/embeddings returning 1D score vectors."""
+
+    pair_sep = "\u241e"  # Record Separator
+
+    def handler(request: httpx.Request):
+        assert request.method == "POST"
+        assert str(request.url) == "http://test/api/embeddings"
+        payload = json.loads(request.content.decode())
+        assert payload["model"] == "r"
+        assert payload["input"] == [f"q{pair_sep}doc1", f"q{pair_sep}doc2"]
+        # kwargs are forwarded into payload.options
+        assert payload["options"]["pair_sep"] == pair_sep
+        return httpx.Response(
+            200,
+            json={
+                "model": "r",
+                "embeddings": [[0.91], [0.12]],
+                "total_duration": 10,
+            },
+        )
+
+    c = _make_client(handler)
+    try:
+        out = c.embed("r", [f"q{pair_sep}doc1", f"q{pair_sep}doc2"], pair_sep=pair_sep)
+        assert out.model == "r"
+        assert out.embeddings == [[0.91], [0.12]]
+        # Convenience property still works for 1D "embeddings" (scores)
+        assert out.embedding == [0.91]
+    finally:
+        c.close()
+
+
 def test_request_error_uses_server_error_message():
     def handler(request: httpx.Request):
         return httpx.Response(
