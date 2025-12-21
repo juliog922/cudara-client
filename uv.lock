@@ -35,7 +35,6 @@ wheels = [
 
 [[package]]
 name = "cudara-client"
-version = "0.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
