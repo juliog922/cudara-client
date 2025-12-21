@@ -19,6 +19,8 @@ jobs:
         working-directory: ${{ env.CLIENT_DIR }}
     steps:
       - uses: actions/checkout@v4
+        with:
+            fetch-depth: 0
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v7
